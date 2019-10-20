@@ -23,6 +23,13 @@ namespace UserInterface
         public MainWindow()
         {
             InitializeComponent();
+
+            Func<double, double> function = x => 0.5 * Math.Pow(x - 4, 2) - 4;
+            double a = 2;
+            double b = 10;
+
+            SimpleIterationPlot.DrawInterval(a, b);
+            SimpleIterationPlot.DrawFunction(function, a, b);
         }
     }
 }

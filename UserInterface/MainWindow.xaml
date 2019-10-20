@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="800">
     <Window.DataContext>
-        <local:SimpleIterationPlot/>
+        <local:Plot/>
     </Window.DataContext>
     <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <TabItem Header="Simple iteration">
@@ -17,10 +17,10 @@
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                
-                <oxy:PlotView Model="{Binding SimpleIterationPlotModel}" Grid.Column="1"/>
 
-                <Grid Height="350" VerticalAlignment="Top" Grid.Column="0">
+                <oxy:PlotView Model="{Binding PlotModel}" Grid.Column="1"/>
+
+                <Grid Height="370" VerticalAlignment="Top" Grid.Column="0">
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
@@ -32,13 +32,14 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    
+
                     <Label Grid.Row="0" x:Name="functionLabel" Content="Function:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="20"/>
-                    <TextBox x:Name="functionInput" HorizontalAlignment="Stretch" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+                    <TextBox x:Name="functionInput" HorizontalAlignment="Stretch" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Text="x^2 - 4"/>
 
                     <Label Grid.Row="2" x:Name="derivativeLabel" Content="Derivative:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="20"/>
-                    <TextBox x:Name="derivativeInput" HorizontalAlignment="Stretch" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+                    <TextBox x:Name="derivativeInput" HorizontalAlignment="Stretch" Grid.Row="3" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Text="2 * x"/>
 
                     <Label Grid.Row="4" x:Name="intervalLabel" Content="Interval:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="20"/>
                     <Grid Grid.Row="5">
@@ -54,22 +55,25 @@
                         <Label Grid.Column="2" x:Name="semicolonLabel" Content=";" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Padding="5,0,5,5"/>
                         <Label Grid.Column="4" x:Name="rightBracketLabel" Content="]" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Padding="5,0,5,5"/>
 
-                        <TextBox Grid.Column="1" x:Name="intervalInputA" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
-                        <TextBox Grid.Column="3" x:Name="intervalInputB" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+                        <TextBox Grid.Column="1" x:Name="intervalInputA" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Text="0"/>
+                        <TextBox Grid.Column="3" x:Name="intervalInputB" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Text="5"/>
                     </Grid>
 
                     <Label Grid.Row="6" x:Name="epsilonLabel" Content="Epsilon:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="20"/>
-                    <TextBox Grid.Row="7" x:Name="epsilonInput" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
-                    
-                    <Button Grid.Row="8" x:Name="calculateButton" Content="Calculate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="calculateButton_Click"/>
+                    <TextBox Grid.Row="7" x:Name="epsilonInput" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Text="0,0001"/>
 
-                    <TextBox Grid.Row="9" x:Name="resultTextBox" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="20" IsReadOnly="True"/>
+                    <ComboBox Grid.Row="8" x:Name="methodSelect" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="17" SelectedIndex="0">
+                        <TextBlock>Simple iteration method</TextBlock>
+                        <TextBlock>Newton method</TextBlock>
+                        <TextBlock>Chords method</TextBlock>
+                    </ComboBox>
+
+                    <Button Grid.Row="9" x:Name="calculateButton" Content="Calculate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="calculateButton_Click"/>
+
+                    <TextBox Grid.Row="10" x:Name="resultTextBox" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="20" IsReadOnly="True"/>
 
                 </Grid>
             </Grid>
-        </TabItem>
-        <TabItem Header="TabItem">
-            <Grid Background="#FFE5E5E5"/>
         </TabItem>
     </TabControl>
 </Window>

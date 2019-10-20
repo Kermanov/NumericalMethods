@@ -47,7 +47,8 @@ namespace Unit1.IterativeMethods
             int i = 0;
             do
             {
-                Roots.Add(Roots[i] - Phi(Roots[i]) * function(Roots[i]));
+                var nextRoot = Roots[i] - Phi(Roots[i]) * function(Roots[i]);
+                Roots.Add(nextRoot);
                 ++i;
             }
             while (Math.Abs(Roots[i] - Roots[i - 1]) > eps);

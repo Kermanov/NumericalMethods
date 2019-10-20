@@ -69,5 +69,32 @@ namespace UserInterface
             outerFuncSeriesRight.Color = OxyColor.FromArgb(80, 0, 0, 0);
             SimpleIterationPlotModel.Series.Add(outerFuncSeriesRight);
         }
+
+        public static void DrawMethodFunction(List<double> roots)
+        {
+            var lineSeries = new LineSeries();
+            lineSeries.Color = OxyColor.FromRgb(0, 0, 150);
+
+            for (int i = 1; i < roots.Count; ++i)
+            {
+                lineSeries.Points.Add(new DataPoint(roots[i - 1], roots[i]));
+
+                var rootLine = new LineSeries();
+                rootLine.LineStyle = LineStyle.Dash;
+                rootLine.StrokeThickness = 1;
+                rootLine.Color = OxyColor.FromRgb(0, 0, 0);
+
+                rootLine.Points.Add(new DataPoint(roots[i - 1], roots[i]));
+                rootLine.Points.Add(new DataPoint(roots[i - 1], 0));
+
+                SimpleIterationPlotModel.Series.Add(rootLine);
+            }
+            SimpleIterationPlotModel.Series.Add(lineSeries);
+
+            var funcSeries = new FunctionSeries(x => x, 0, roots.First(), 0.5, "y = x");
+            funcSeries.Color = OxyColor.FromArgb(80, 0, 100, 100);
+            funcSeries.LineStyle = LineStyle.Dot;
+            SimpleIterationPlotModel.Series.Add(funcSeries);
+        }
     }
 }

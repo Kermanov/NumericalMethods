@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Common;
+using Unit1.IterativeMethods;
 
 namespace UserInterface
 {
@@ -23,13 +25,27 @@ namespace UserInterface
         public MainWindow()
         {
             InitializeComponent();
+        }
 
-            Func<double, double> function = x => 0.5 * Math.Pow(x - 4, 2) - 4;
-            double a = 2;
-            double b = 10;
+        private void calculateButton_Click(object sender, RoutedEventArgs e)
+        {
+            var function = ExpressionParser.GetFunction(functionInput.Text);
+            var derivaitve = ExpressionParser.GetFunction(derivativeInput.Text);
 
+            var a = double.Parse(intervalInputA.Text);
+            var b = double.Parse(intervalInputB.Text);
+            var eps = double.Parse(epsilonInput.Text);
+
+            var method = new SimpleIterativeMethod(function, derivaitve, a, b, eps);
+            double root = method.Calculate();
+
+            resultTextBox.Text = $"x = {root}";
+
+            SimpleIterationPlot.SimpleIterationPlotModel.Series.Clear();
             SimpleIterationPlot.DrawInterval(a, b);
             SimpleIterationPlot.DrawFunction(function, a, b);
+            SimpleIterationPlot.DrawMethodFunction(method.Roots);
+            SimpleIterationPlot.SimpleIterationPlotModel.InvalidatePlot(true);
         }
     }
 }

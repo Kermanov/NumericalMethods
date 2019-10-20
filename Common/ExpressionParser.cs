@@ -7,11 +7,13 @@ namespace Common
     {
         public static Func<double, double> GetFunction(string stringExpr)
         {
-            var expr = new Expression(stringExpr);
+            var expression = new Expression(stringExpr);
+            expression.addArguments(new Argument("x"));
+
             return x =>
             {
-                expr.addArguments(new Argument("x", x));
-                return expr.calculate();
+                expression.setArgumentValue("x", x);
+                return expression.calculate();
             };
         }
     }

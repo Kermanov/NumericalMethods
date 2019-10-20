@@ -16,7 +16,7 @@ namespace UserInterface
 
         static Plot()
         {
-            PlotModel = new PlotModel { Title = "Simple iteration plot" };
+            PlotModel = new PlotModel();
             PlotModel.PlotMargins = new OxyThickness(1);
             PlotModel.PlotType = PlotType.Cartesian;
             PlotModel.PlotAreaBorderThickness = new OxyThickness(0);
@@ -126,5 +126,33 @@ namespace UserInterface
             }
         }
 
+        public static void DrawChordMethodFunction(List<double> roots, double b, Func<double, double> func)
+        {
+            for (int i = 0; i < roots.Count; ++i)
+            {
+                var chord = new LineSeries();
+                chord.LineStyle = LineStyle.Solid;
+                chord.StrokeThickness = 1;
+                chord.Color = OxyColor.FromRgb(200, 0, 0);
+
+                chord.Points.Add(new DataPoint(roots[i], func(roots[i])));
+                chord.Points.Add(new DataPoint(b, func(b)));
+
+                PlotModel.Series.Add(chord);
+            }
+
+            for (int i = 1; i < roots.Count; ++i)
+            {
+                var rootLine = new LineSeries();
+                rootLine.LineStyle = LineStyle.Dash;
+                rootLine.StrokeThickness = 1;
+                rootLine.Color = OxyColor.FromRgb(0, 0, 0);
+
+                rootLine.Points.Add(new DataPoint(roots[i], 0));
+                rootLine.Points.Add(new DataPoint(roots[i], func(roots[i])));
+
+                PlotModel.Series.Add(rootLine);
+            }
+        }
     }
 }

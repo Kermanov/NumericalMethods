@@ -49,6 +49,14 @@ namespace UserInterface
             return root;
         }
 
+        public double ChordIterativeMethodRun()
+        {
+            var method = new ChordIterativeMethod(function, a, b, eps);
+            double root = method.Calculate();
+            Plot.DrawChordMethodFunction(method.Roots, b, function);
+            return root;
+        }
+
         private void calculateButton_Click(object sender, RoutedEventArgs e)
         {
             function = ExpressionParser.GetFunction(functionInput.Text);
@@ -69,6 +77,10 @@ namespace UserInterface
             else if (methodSelect.SelectedIndex == 1)
             {
                 root = NewtonIterativeMethodRun();
+            }
+            else if (methodSelect.SelectedIndex == 2)
+            {
+                root = ChordIterativeMethodRun();
             }
 
             Plot.PlotModel.InvalidatePlot(true);

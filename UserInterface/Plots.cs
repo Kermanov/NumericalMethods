@@ -10,27 +10,34 @@ using OxyPlot.Axes;
 
 namespace UserInterface
 {
-    public class Plot
+    public class Plots
     {
-        public static PlotModel PlotModel { get; private set; }
+        public static PlotModel PlotUnit1Model { get; set; }
+        public static PlotModel PlotUnit2Model { get; set; }
 
-        static Plot()
+        static Plots()
         {
-            PlotModel = new PlotModel();
-            PlotModel.PlotMargins = new OxyThickness(1);
-            PlotModel.PlotType = PlotType.Cartesian;
-            PlotModel.PlotAreaBorderThickness = new OxyThickness(0);
+            PlotUnit1Model = CreatePlot();
+            PlotUnit2Model = CreatePlot();
+        }
 
-            PlotModel.Axes.Add(new LinearAxis 
-            { 
-                Position = AxisPosition.Bottom, 
+        static PlotModel CreatePlot()
+        {
+            var model = new PlotModel();
+            model.PlotMargins = new OxyThickness(1);
+            model.PlotType = PlotType.Cartesian;
+            model.PlotAreaBorderThickness = new OxyThickness(0);
+
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Bottom,
                 PositionAtZeroCrossing = true,
                 AxislineStyle = LineStyle.Solid,
                 MajorGridlineStyle = LineStyle.Solid,
                 MajorGridlineColor = OxyColor.FromArgb(50, 0, 0, 0)
 
             });
-            PlotModel.Axes.Add(new LinearAxis
+            model.Axes.Add(new LinearAxis
             {
                 Position = AxisPosition.Left,
                 PositionAtZeroCrossing = true,
@@ -38,9 +45,11 @@ namespace UserInterface
                 MajorGridlineStyle = LineStyle.Solid,
                 MajorGridlineColor = OxyColor.FromArgb(50, 0, 0, 0)
             });
+
+            return model;
         }
 
-        public static void DrawInterval(double a, double b)
+        public static void DrawInterval(PlotModel model, double a, double b)
         {
             var lineSeries = new LineSeries();
             lineSeries.Color = OxyColor.FromArgb(200, 200, 50, 50);
@@ -49,25 +58,25 @@ namespace UserInterface
             lineSeries.Points.Add(new DataPoint(a, 0));
             lineSeries.Points.Add(new DataPoint(b, 0));
 
-            PlotModel.Series.Add(lineSeries);
+            model.Series.Add(lineSeries);
         }
 
-        public static void DrawFunction(Func<double, double> func, double a, double b)
+        public static void DrawFunction(PlotModel model, Func<double, double> func, double a, double b, string color = "255,100,200,100")
         {
             var funcSeries = new FunctionSeries(func, a, b, 0.1);
-            funcSeries.Color = OxyColor.FromRgb(100, 200, 100);
-            PlotModel.Series.Add(funcSeries);
+            funcSeries.Color = OxyColor.Parse(color);
+            model.Series.Add(funcSeries);
 
             double outerIntervalLength = (b - a) * 5;
             var outerFuncSeriesLeft = new FunctionSeries(func, a - outerIntervalLength, a, 0.1);
             outerFuncSeriesLeft.LineStyle = LineStyle.Dash;
             outerFuncSeriesLeft.Color = OxyColor.FromArgb(80, 0, 0, 0);
-            PlotModel.Series.Add(outerFuncSeriesLeft);
+            model.Series.Add(outerFuncSeriesLeft);
 
             var outerFuncSeriesRight = new FunctionSeries(func, b, b + outerIntervalLength, 0.1);
             outerFuncSeriesRight.LineStyle = LineStyle.Dash;
             outerFuncSeriesRight.Color = OxyColor.FromArgb(80, 0, 0, 0);
-            PlotModel.Series.Add(outerFuncSeriesRight);
+            model.Series.Add(outerFuncSeriesRight);
         }
 
         public static void DrawSimpleMethodFunction(List<double> roots)
@@ -87,14 +96,14 @@ namespace UserInterface
                 rootLine.Points.Add(new DataPoint(roots[i - 1], roots[i]));
                 rootLine.Points.Add(new DataPoint(roots[i - 1], 0));
 
-                PlotModel.Series.Add(rootLine);
+                PlotUnit1Model.Series.Add(rootLine);
             }
-            PlotModel.Series.Add(lineSeries);
+            PlotUnit1Model.Series.Add(lineSeries);
 
             var funcSeries = new FunctionSeries(x => x, 0, roots.First(), 0.5, "y = x");
             funcSeries.Color = OxyColor.FromArgb(80, 0, 100, 100);
             funcSeries.LineStyle = LineStyle.Dot;
-            PlotModel.Series.Add(funcSeries);
+            PlotUnit1Model.Series.Add(funcSeries);
         }
 
         public static void DrawNewtonMethodFunction(List<double> roots, Func<double, double> func)
@@ -109,7 +118,7 @@ namespace UserInterface
                 rootLine.Points.Add(new DataPoint(roots[i], func(roots[i])));
                 rootLine.Points.Add(new DataPoint(roots[i], 0));
 
-                PlotModel.Series.Add(rootLine);
+                PlotUnit1Model.Series.Add(rootLine);
             }
 
             for (int i = 1; i < roots.Count; ++i)
@@ -122,7 +131,7 @@ namespace UserInterface
                 tangent.Points.Add(new DataPoint(roots[i], 0));
                 tangent.Points.Add(new DataPoint(roots[i - 1], func(roots[i - 1])));
 
-                PlotModel.Series.Add(tangent);
+                PlotUnit1Model.Series.Add(tangent);
             }
         }
 
@@ -138,7 +147,7 @@ namespace UserInterface
                 chord.Points.Add(new DataPoint(roots[i], func(roots[i])));
                 chord.Points.Add(new DataPoint(b, func(b)));
 
-                PlotModel.Series.Add(chord);
+                PlotUnit1Model.Series.Add(chord);
             }
 
             for (int i = 1; i < roots.Count; ++i)
@@ -151,8 +160,23 @@ namespace UserInterface
                 rootLine.Points.Add(new DataPoint(roots[i], 0));
                 rootLine.Points.Add(new DataPoint(roots[i], func(roots[i])));
 
-                PlotModel.Series.Add(rootLine);
+                PlotUnit1Model.Series.Add(rootLine);
             }
+        }
+
+        public static void DrawPoints(PlotModel model, double[] xValues, double[] yValues)
+        {
+            var points = new LineSeries();
+            points.Color = OxyColor.FromArgb(0, 0, 0, 0);
+            points.MarkerType = MarkerType.Circle;
+            points.MarkerStroke = OxyColor.FromRgb(153, 0, 255);
+
+            for (int i = 0; i < xValues.Length; ++i)
+            {
+                points.Points.Add(new DataPoint(xValues[i], yValues[i]));
+            }
+
+            model.Series.Add(points);
         }
     }
 }

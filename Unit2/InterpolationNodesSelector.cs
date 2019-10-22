@@ -13,7 +13,7 @@ namespace Unit2
             double[] nodes = new double[n];
             for (int i = 0; i < n; ++i)
             {
-                nodes[i] = a + ((b - a) * i) / n;
+                nodes[i] = a + (b - a) / (n - 1) * i;
             }
 
             return nodes;

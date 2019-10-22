@@ -63,7 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Plot.cs" />
+    <Compile Include="Plots.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,6 +112,10 @@
     <ProjectReference Include="..\Unit1\Unit1.csproj">
       <Project>{ab7ebce1-668a-465c-96e7-ba74bc55fddb}</Project>
       <Name>Unit1</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Unit2\Unit2.csproj">
+      <Project>{f5e3ea20-7736-489d-8703-6bc5dacbb24f}</Project>
+      <Name>Unit2</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

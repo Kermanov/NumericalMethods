@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
 using Unit1.IterativeMethods;
+using Unit2.InterpolationMethods;
+using Unit2;
 
 namespace UserInterface
 {
@@ -28,6 +30,10 @@ namespace UserInterface
         double b;
         double eps;
 
+        Func<double, double> function2;
+        double a2;
+        double b2;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -37,7 +43,7 @@ namespace UserInterface
         {
             var method = new SimpleIterativeMethod(function, derivative, a, b, eps);
             double root = method.Calculate();
-            Plot.DrawSimpleMethodFunction(method.Roots);
+            Plots.DrawSimpleMethodFunction(method.Roots);
             return root;
         }
 
@@ -45,7 +51,7 @@ namespace UserInterface
         {
             var method = new NewtonIterativeMethod(function, derivative, a, b, eps);
             double root = method.Calculate();
-            Plot.DrawNewtonMethodFunction(method.Roots, function);
+            Plots.DrawNewtonMethodFunction(method.Roots, function);
             return root;
         }
 
@@ -53,7 +59,7 @@ namespace UserInterface
         {
             var method = new ChordIterativeMethod(function, a, b, eps);
             double root = method.Calculate();
-            Plot.DrawChordMethodFunction(method.Roots, b, function);
+            Plots.DrawChordMethodFunction(method.Roots, b, function);
             return root;
         }
 
@@ -65,9 +71,9 @@ namespace UserInterface
             b = double.Parse(intervalInputB.Text);
             eps = double.Parse(epsilonInput.Text);
 
-            Plot.PlotModel.Series.Clear();
-            Plot.DrawInterval(a, b);
-            Plot.DrawFunction(function, a, b);
+            Plots.PlotUnit1Model.Series.Clear();
+            Plots.DrawInterval(Plots.PlotUnit1Model, a, b);
+            Plots.DrawFunction(Plots.PlotUnit1Model, function, a, b);
 
             double root = 0;
             if (methodSelect.SelectedIndex == 0)
@@ -83,9 +89,40 @@ namespace UserInterface
                 root = ChordIterativeMethodRun();
             }
 
-            Plot.PlotModel.InvalidatePlot(true);
+            Plots.PlotUnit1Model.InvalidatePlot(true);
 
             resultTextBox.Text = $"x = {root}";
+        }
+
+        private void interpolateButton_Click(object sender, RoutedEventArgs e)
+        {
+            function2 = ExpressionParser.GetFunction(functionInput2.Text);
+            int nNodes = int.Parse(nodesNumberInput.Text);
+            a2 = double.Parse(intervalInputA2.Text);
+            b2 = double.Parse(intervalInputB2.Text);
+
+            double[] xValues = null;
+            if (nodesSelectMode.SelectedIndex == 0)
+            {
+                xValues = InterpolationNodesSelector.SelectUniform(a2, b2, nNodes);
+            }
+
+            double[] yValues = new double[nNodes];
+            for (int i = 0; i < nNodes; ++i)
+            {
+                yValues[i] = function2(xValues[i]);
+            }
+
+            var lagrangeMethod = new LagrangeInterpolationMethod(xValues, yValues);
+
+            Plots.PlotUnit2Model.Series.Clear();
+
+            Plots.DrawInterval(Plots.PlotUnit2Model, a2, b2);
+            Plots.DrawFunction(Plots.PlotUnit2Model, function2, a2, b2);
+            Plots.DrawFunction(Plots.PlotUnit2Model, lagrangeMethod.Polynom, a2, b2, "255,100,100,200");
+            Plots.DrawPoints(Plots.PlotUnit2Model, xValues, yValues);
+
+            Plots.PlotUnit2Model.InvalidatePlot(true);
         }
     }
 }

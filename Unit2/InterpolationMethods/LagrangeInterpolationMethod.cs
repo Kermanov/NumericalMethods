@@ -14,8 +14,8 @@ namespace Unit2.InterpolationMethods
 
         public LagrangeInterpolationMethod(double[] xValues, double[] yValues)
         {
-            xValues.CopyTo(this.xValues, 0);
-            yValues.CopyTo(this.yValues, 0);
+            this.xValues = xValues;
+            this.yValues = yValues;
         }
 
         public double Polynom(double x)

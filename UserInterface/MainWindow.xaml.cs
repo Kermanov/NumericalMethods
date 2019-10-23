@@ -16,6 +16,7 @@ using Common;
 using Unit1.IterativeMethods;
 using Unit2.InterpolationMethods;
 using Unit2;
+using Unit2.Interfaces;
 
 namespace UserInterface
 {
@@ -65,11 +66,26 @@ namespace UserInterface
 
         private void calculateButton_Click(object sender, RoutedEventArgs e)
         {
-            function = ExpressionParser.GetFunction(functionInput.Text);
-            derivative = ExpressionParser.GetFunction(derivativeInput.Text);
-            a = double.Parse(intervalInputA.Text);
-            b = double.Parse(intervalInputB.Text);
-            eps = double.Parse(epsilonInput.Text);
+            try
+            {
+                function = ExpressionParser.GetFunction(functionInput.Text);
+                derivative = ExpressionParser.GetFunction(derivativeInput.Text);
+
+                a = double.Parse(intervalInputA.Text);
+                b = double.Parse(intervalInputB.Text);
+
+                if (a >= b)
+                {
+                    throw new Exception();
+                }
+
+                eps = double.Parse(epsilonInput.Text);
+            }
+            catch
+            {
+                resultTextBox.Text = $"Incorrect input";
+                return;
+            }
 
             Plots.PlotUnit1Model.Series.Clear();
             Plots.DrawInterval(Plots.PlotUnit1Model, a, b);
@@ -101,10 +117,19 @@ namespace UserInterface
             a2 = double.Parse(intervalInputA2.Text);
             b2 = double.Parse(intervalInputB2.Text);
 
+            if (methodSelect2.SelectedIndex == 1)
+            {
+                nodesSelectMode.SelectedIndex = 0;
+            }
+
             double[] xValues = null;
             if (nodesSelectMode.SelectedIndex == 0)
             {
                 xValues = InterpolationNodesSelector.SelectUniform(a2, b2, nNodes);
+            }
+            else if (nodesSelectMode.SelectedIndex == 1)
+            {
+                xValues = InterpolationNodesSelector.SelectChebyshev(a2, b2, nNodes);
             }
 
             double[] yValues = new double[nNodes];
@@ -113,13 +138,25 @@ namespace UserInterface
                 yValues[i] = function2(xValues[i]);
             }
 
-            var lagrangeMethod = new LagrangeInterpolationMethod(xValues, yValues);
+            IInterpolationMethod interpolationMethod = null;
+            if (methodSelect2.SelectedIndex == 0)
+            {
+                interpolationMethod = new LagrangeInterpolationMethod(xValues, yValues);
+            }
+            else if (methodSelect2.SelectedIndex == 1)
+            {
+                interpolationMethod = new NewtonInterpolationForwardUniformMethod(xValues, yValues);
+            }
+            else if (methodSelect2.SelectedIndex == 2)
+            {
+                interpolationMethod = new NewtonInterpolationBackUniformMethod(xValues, yValues);
+            }
 
             Plots.PlotUnit2Model.Series.Clear();
 
             Plots.DrawInterval(Plots.PlotUnit2Model, a2, b2);
             Plots.DrawFunction(Plots.PlotUnit2Model, function2, a2, b2);
-            Plots.DrawFunction(Plots.PlotUnit2Model, lagrangeMethod.Polynom, a2, b2, "255,100,100,200");
+            Plots.DrawFunction(Plots.PlotUnit2Model, interpolationMethod.Polynom, a2, b2, "255,100,100,200");
             Plots.DrawPoints(Plots.PlotUnit2Model, xValues, yValues);
 
             Plots.PlotUnit2Model.InvalidatePlot(true);

@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Interfaces\IInterpolationMethod.cs" />
     <Compile Include="InterpolationMethods\LagrangeInterpolationMethod.cs" />
+    <Compile Include="InterpolationMethods\NewtonInterpolationBackUniformMethod.cs" />
+    <Compile Include="InterpolationMethods\NewtonInterpolationForwardUniformMethod.cs" />
     <Compile Include="InterpolationNodesSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

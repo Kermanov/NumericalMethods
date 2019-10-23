@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Unit2.Interfaces
 {
-    interface IInterpolationMethod
+    public interface IInterpolationMethod
     {
         double Polynom(double x);
     }

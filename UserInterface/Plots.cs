@@ -34,7 +34,8 @@ namespace UserInterface
                 PositionAtZeroCrossing = true,
                 AxislineStyle = LineStyle.Solid,
                 MajorGridlineStyle = LineStyle.Solid,
-                MajorGridlineColor = OxyColor.FromArgb(50, 0, 0, 0)
+                MajorGridlineColor = OxyColor.FromArgb(50, 0, 0, 0),
+                FilterMaxValue = 50
 
             });
             model.Axes.Add(new LinearAxis
@@ -43,7 +44,8 @@ namespace UserInterface
                 PositionAtZeroCrossing = true,
                 AxislineStyle = LineStyle.Solid,
                 MajorGridlineStyle = LineStyle.Solid,
-                MajorGridlineColor = OxyColor.FromArgb(50, 0, 0, 0)
+                MajorGridlineColor = OxyColor.FromArgb(50, 0, 0, 0),
+                FilterMaxValue = 50
             });
 
             return model;

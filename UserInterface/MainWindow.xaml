@@ -127,6 +127,8 @@
                         <TextBlock>Lagrange method</TextBlock>
                         <TextBlock>NewtonForwardUniform</TextBlock>
                         <TextBlock>NewtonBackUniform</TextBlock>
+                        <TextBlock>NewtonForwardUneven</TextBlock>
+                        <TextBlock>NewtonBackUneven</TextBlock>
                     </ComboBox>
 
                     <ComboBox Grid.Row="7" x:Name="nodesSelectMode" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="17" SelectedIndex="0">

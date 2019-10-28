@@ -117,7 +117,7 @@ namespace UserInterface
             a2 = double.Parse(intervalInputA2.Text);
             b2 = double.Parse(intervalInputB2.Text);
 
-            if (methodSelect2.SelectedIndex == 1)
+            if (methodSelect2.SelectedIndex == 1 || methodSelect2.SelectedIndex == 2)
             {
                 nodesSelectMode.SelectedIndex = 0;
             }
@@ -150,6 +150,14 @@ namespace UserInterface
             else if (methodSelect2.SelectedIndex == 2)
             {
                 interpolationMethod = new NewtonInterpolationBackUniformMethod(xValues, yValues);
+            }
+            else if (methodSelect2.SelectedIndex == 3)
+            {
+                interpolationMethod = new NewtonInterpolationForwardUnevenMethod(xValues, yValues);
+            }
+            else if (methodSelect2.SelectedIndex == 4)
+            {
+                interpolationMethod = new NewtonInterpolationBackUnevenMethod(xValues, yValues);
             }
 
             Plots.PlotUnit2Model.Series.Clear();

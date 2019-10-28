@@ -22,47 +22,45 @@ namespace Unit2.InterpolationMethods
 
         public double Polynom(double x)
         {
-            int n = xValues.Length;
-            double result = Cj(0);
-            for (int j = 1; j < n; j++)
+            double sum = yValues[0];
+            double t = (x - xValues[0]) / step;
+
+            for (int i = 1; i < xValues.Length; ++i)
             {
-                double coef = Cj(j);
-                for (int k = 0; k < j; k++)
+                double numerator = 1;
+                for (int k = 0; k < i; ++k)
                 {
-                    coef *= x - xValues[k];
+                    numerator *= (t - k);
                 }
-                result += coef;
+
+                double delta = 0;
+                for (int k = 0; k <= i; ++k)
+                {
+                    delta += Math.Pow(-1, i - k) * Combination(i, k) * yValues[k];
+                }
+
+                numerator *= delta;
+                sum += numerator / Factorial(i);
             }
 
-            return result;
+            return sum;
         }
 
-        double Cj(int j)
+        int Factorial(int n)
         {
-            if (j == 0)
+            if (n > 1)
             {
-                return yValues[0];
+                return n * Factorial(n - 1);
             }
-            double delta = Delta(j, j);
-            return delta / (Factorial(j) * Math.Pow(step, j));
-        }
-
-        double Delta(int p, int i)
-        {
-            if (p == 1)
-            {
-                return yValues[i] - yValues[i - 1];
-            }
-            return Delta(p - 1, i) - Delta(p - 1, i - 1);
-        }
-
-        double Factorial(double value)
-        {
-            if (value == 0)
+            else
             {
                 return 1;
             }
-            return value * Factorial(value - 1);
+        }
+
+        int Combination(int n, int k)
+        {
+            return Factorial(n) / (Factorial(k) * Factorial(n - k));
         }
     }
 }

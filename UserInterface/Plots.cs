@@ -63,9 +63,9 @@ namespace UserInterface
             model.Series.Add(lineSeries);
         }
 
-        public static void DrawFunction(PlotModel model, Func<double, double> func, double a, double b, string color = "255,100,200,100")
+        public static void DrawFunction(PlotModel model, Func<double, double> func, double a, double b, string color = "255,100,200,100", string title = null)
         {
-            var funcSeries = new FunctionSeries(func, a, b, 0.1);
+            var funcSeries = new FunctionSeries(func, a, b, 0.01, title);
             funcSeries.Color = OxyColor.Parse(color);
             model.Series.Add(funcSeries);
 
@@ -171,7 +171,10 @@ namespace UserInterface
             var points = new LineSeries();
             points.Color = OxyColor.FromArgb(0, 0, 0, 0);
             points.MarkerType = MarkerType.Circle;
-            points.MarkerStroke = OxyColor.FromRgb(153, 0, 255);
+            points.MarkerStroke = OxyColor.FromRgb(255, 132, 0);
+            points.MarkerFill = OxyColor.FromRgb(255, 255, 255);
+            points.MarkerSize = 4;
+            points.MarkerStrokeThickness = 3;
 
             for (int i = 0; i < xValues.Length; ++i)
             {

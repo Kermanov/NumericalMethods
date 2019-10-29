@@ -38,7 +38,6 @@ namespace UserInterface
         public MainWindow()
         {
             InitializeComponent();
-            nodesTextbox.Text = nodesSlider.Value.ToString();
         }
 
         private double SimpleIterativeMethodRun()
@@ -164,8 +163,8 @@ namespace UserInterface
             Plots.PlotUnit2Model.Series.Clear();
 
             Plots.DrawInterval(Plots.PlotUnit2Model, a2, b2);
-            Plots.DrawFunction(Plots.PlotUnit2Model, function2, a2, b2);
-            Plots.DrawFunction(Plots.PlotUnit2Model, interpolationMethod.Polynom, a2, b2, "255,100,100,200");
+            Plots.DrawFunction(Plots.PlotUnit2Model, function2, a2, b2, "255,100,200,100", $"y = {functionInput2.Text}");
+            Plots.DrawFunction(Plots.PlotUnit2Model, interpolationMethod.Polynom, a2, b2, "255,100,100,200", "Interpolation polynom");
             Plots.DrawPoints(Plots.PlotUnit2Model, xValues, yValues);
 
             Plots.PlotUnit2Model.InvalidatePlot(true);

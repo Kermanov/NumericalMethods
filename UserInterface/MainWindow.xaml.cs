@@ -38,6 +38,7 @@ namespace UserInterface
         public MainWindow()
         {
             InitializeComponent();
+            nodesTextbox.Text = nodesSlider.Value.ToString();
         }
 
         private double SimpleIterativeMethodRun()
@@ -113,7 +114,7 @@ namespace UserInterface
         private void interpolateButton_Click(object sender, RoutedEventArgs e)
         {
             function2 = ExpressionParser.GetFunction(functionInput2.Text);
-            int nNodes = int.Parse(nodesNumberInput.Text);
+            int nNodes = (int)nodesSlider.Value;
             a2 = double.Parse(intervalInputA2.Text);
             b2 = double.Parse(intervalInputB2.Text);
 

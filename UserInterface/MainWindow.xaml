@@ -11,14 +11,14 @@
         <local:Plots/>
     </Window.DataContext>
     <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <TabItem Header="Unit 1">
+        <TabItem Header="Equations">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <oxy:PlotView Model="{Binding PlotUnit1Model}" Grid.Column="1" Margin="25, 0, 0, 0"/>
+                <oxy:PlotView Model="{Binding PlotUnit1Model}" Grid.Column="1" Margin="25, 0, 0, 20"/>
 
                 <Grid Height="370" VerticalAlignment="Top" Grid.Column="0" Margin="5, 0, 0, 0">
                     <Grid.RowDefinitions>
@@ -75,16 +75,16 @@
                 </Grid>
             </Grid>
         </TabItem>
-        <TabItem Header="Unit 2">
+        <TabItem Header="Interpolation">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.5*"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <oxy:PlotView Model="{Binding PlotUnit2Model}" Grid.Column="1"/>
+                <oxy:PlotView Model="{Binding PlotUnit2Model}" Grid.Column="1" Margin="25, 0, 0, 20"/>
 
-                <Grid Height="370" VerticalAlignment="Top" Grid.Column="0">
+                <Grid Height="370" VerticalAlignment="Top" Grid.Column="0" Margin="5, 0, 0, 0">
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
@@ -100,7 +100,16 @@
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" x:Name="functionLabel2" Content="Function:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="20"/>
-                    <TextBox x:Name="functionInput2" HorizontalAlignment="Stretch" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Text="cos(x * 2)"/>
+
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.15*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0" x:Name="yLabel" Content="y=" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" Margin="0, -5, 0, 0"/>
+                        <TextBox x:Name="functionInput2" HorizontalAlignment="Stretch" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Text="cos(x * 2)"/>
+                    </Grid>
 
                     <Label Grid.Row="2" x:Name="intervalLabel2" Content="Interval:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="20"/>
                     <Grid Grid.Row="3">
@@ -121,7 +130,15 @@
                     </Grid>
 
                     <Label Grid.Row="4" x:Name="nodesNumberLabel" Content="Number of nodes:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="20"/>
-                    <TextBox x:Name="nodesNumberInput" HorizontalAlignment="Stretch" Grid.Row="5" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Text="5"/>
+                    <Grid Grid.Row="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Slider x:Name="nodesSlider" HorizontalAlignment="Stretch" Grid.Column="0" VerticalAlignment="Stretch" Margin="0, 5, 0, 0" TickPlacement="BottomRight" Value="2" Minimum="2" Maximum="15"/>
+                        <TextBox Grid.Column="1" x:Name="nodesTextbox" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+                    </Grid>
 
                     <ComboBox Grid.Row="6" x:Name="methodSelect2" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="17" SelectedIndex="0">
                         <TextBlock>Lagrange method</TextBlock>

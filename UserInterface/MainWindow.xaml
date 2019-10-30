@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:UserInterface"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="800">
+        Title="Numerical Methods App" Height="550" Width="800" WindowStartupLocation="CenterScreen" MinWidth="800" MinHeight="550">
     <Window.DataContext>
         <local:Plots/>
     </Window.DataContext>

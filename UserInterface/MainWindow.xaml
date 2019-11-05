@@ -158,5 +158,74 @@
                 </Grid>
             </Grid>
         </TabItem>
+
+        <TabItem Header="Interpolation 2">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="260"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <oxy:PlotView Model="{Binding PlotInterpol2Model}" Grid.Column="1" Margin="25, 0, 0, 20"/>
+
+                <Grid Height="370" VerticalAlignment="Top" Grid.Column="0" Margin="5, 0, 0, 0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" x:Name="xValuesLabel" Content="X values:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="20"/>
+                    <TextBox Grid.Row="1" x:Name="xValuesInput" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+                    
+                    <Label Grid.Row="2" x:Name="yValuesLabel" Content="Y values:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="20"/>
+                    <TextBox Grid.Row="3" x:Name="yValuesInput" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20"/>
+
+                    <ComboBox Grid.Row="4" x:Name="methodSelect3" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="17" SelectedIndex="0">
+                        <TextBlock>Lagrange method</TextBlock>
+                        <TextBlock>NewtonForwardUniform</TextBlock>
+                        <TextBlock>NewtonBackUniform</TextBlock>
+                        <TextBlock>NewtonForwardUneven</TextBlock>
+                        <TextBlock>NewtonBackUneven</TextBlock>
+                    </ComboBox>
+
+                    <Button Grid.Row="5" x:Name="interpolateButton2" Content="Interpolate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="interpolateButton2_Click"/>
+
+                    <Grid Grid.Row="7">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0" x:Name="xValueLabel" Content="x = " HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20"/>
+                        <TextBox Grid.Column="1" x:Name="xValueInput" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="20"/>
+
+                    </Grid>
+
+                    <Grid Grid.Row="8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0" x:Name="yValueLabel" Content="y = " HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20"/>
+                        <TextBox Grid.Column="1" x:Name="yValueResult" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="20" IsReadOnly="True"/>
+
+                    </Grid>
+
+                    <Button Grid.Row="9" x:Name="calculateCustom" Content="Calculate value" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0, 5, 0, 0" Click="calculateCustom_Click"/>
+
+
+                </Grid>
+            </Grid>
+        </TabItem>
     </TabControl>
 </Window>

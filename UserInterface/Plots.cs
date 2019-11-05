@@ -14,11 +14,13 @@ namespace UserInterface
     {
         public static PlotModel PlotUnit1Model { get; set; }
         public static PlotModel PlotUnit2Model { get; set; }
+        public static PlotModel PlotInterpol2Model { get; set; }
 
         static Plots()
         {
             PlotUnit1Model = CreatePlot();
             PlotUnit2Model = CreatePlot();
+            PlotInterpol2Model = CreatePlot();
         }
 
         static PlotModel CreatePlot()

@@ -35,6 +35,8 @@ namespace UserInterface
         double a2;
         double b2;
 
+        IInterpolationMethod interpolationMethod2 = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -168,6 +170,77 @@ namespace UserInterface
             Plots.DrawPoints(Plots.PlotUnit2Model, xValues, yValues);
 
             Plots.PlotUnit2Model.InvalidatePlot(true);
+        }
+
+        private void interpolateButton2_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string[] xValuesString = xValuesInput.Text.TrimEnd(';').Split(';');
+                double[] xValues = new double[xValuesString.Length];
+                for (int i = 0; i < xValuesString.Length; ++i)
+                {
+                    xValues[i] = double.Parse(xValuesString[i]);
+                }
+
+                string[] yValuesString = yValuesInput.Text.TrimEnd(';').Split(';');
+                double[] yValues = new double[yValuesString.Length];
+                for (int i = 0; i < yValuesString.Length; ++i)
+                {
+                    yValues[i] = double.Parse(yValuesString[i]);
+                }
+
+                if (xValues.Length == 0 || yValues.Length == 0)
+                {
+                    throw new Exception();
+                }
+                
+                if (xValues.Length != yValues.Length)
+                {
+                    throw new Exception();
+                }
+
+                if (methodSelect3.SelectedIndex == 0)
+                {
+                    interpolationMethod2 = new LagrangeInterpolationMethod(xValues, yValues);
+                }
+                else if (methodSelect3.SelectedIndex == 1)
+                {
+                    interpolationMethod2 = new NewtonInterpolationForwardUniformMethod(xValues, yValues);
+                }
+                else if (methodSelect3.SelectedIndex == 2)
+                {
+                    interpolationMethod2 = new NewtonInterpolationBackUniformMethod(xValues, yValues);
+                }
+                else if (methodSelect3.SelectedIndex == 3)
+                {
+                    interpolationMethod2 = new NewtonInterpolationForwardUnevenMethod(xValues, yValues);
+                }
+                else if (methodSelect3.SelectedIndex == 4)
+                {
+                    interpolationMethod2 = new NewtonInterpolationBackUnevenMethod(xValues, yValues);
+                }
+
+                Plots.PlotInterpol2Model.Series.Clear();
+
+                Plots.DrawFunction(Plots.PlotInterpol2Model, interpolationMethod2.Polynom, xValues[0], xValues[xValues.Length - 1], "255,100,100,200", "Interpolation polynom");
+                Plots.DrawPoints(Plots.PlotInterpol2Model, xValues, yValues);
+
+                Plots.PlotInterpol2Model.InvalidatePlot(true);
+            }
+            catch { }
+        }
+
+        private void calculateCustom_Click(object sender, RoutedEventArgs e)
+        {
+            if (interpolationMethod2 != null)
+            {
+                try
+                {
+                    yValueResult.Text = interpolationMethod2.Polynom(double.Parse(xValueInput.Text)).ToString();
+                }
+                catch { }
+            }
         }
     }
 }

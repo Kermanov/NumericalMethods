@@ -17,6 +17,8 @@ using Unit1.IterativeMethods;
 using Unit2.InterpolationMethods;
 using Unit2;
 using Unit2.Interfaces;
+using Unit3;
+using Unit3.Interfaces;
 
 namespace UserInterface
 {
@@ -25,9 +27,9 @@ namespace UserInterface
     /// </summary>
     public partial class MainWindow : Window
     {
-        Func<double, double> function;
+        Func<double, double> function1;
         Func<double, double> derivative;
-        double a;
+        double a1;
         double b;
         double eps;
 
@@ -44,7 +46,7 @@ namespace UserInterface
 
         private double SimpleIterativeMethodRun()
         {
-            var method = new SimpleIterativeMethod(function, derivative, a, b, eps);
+            var method = new SimpleIterativeMethod(function1, derivative, a1, b, eps);
             double root = method.Calculate();
             Plots.DrawSimpleMethodFunction(method.Roots);
             return root;
@@ -52,17 +54,17 @@ namespace UserInterface
 
         private double NewtonIterativeMethodRun()
         {
-            var method = new NewtonIterativeMethod(function, derivative, a, b, eps);
+            var method = new NewtonIterativeMethod(function1, derivative, a1, b, eps);
             double root = method.Calculate();
-            Plots.DrawNewtonMethodFunction(method.Roots, function);
+            Plots.DrawNewtonMethodFunction(method.Roots, function1);
             return root;
         }
 
         public double ChordIterativeMethodRun()
         {
-            var method = new ChordIterativeMethod(function, a, b, eps);
+            var method = new ChordIterativeMethod(function1, a1, b, eps);
             double root = method.Calculate();
-            Plots.DrawChordMethodFunction(method.Roots, b, function);
+            Plots.DrawChordMethodFunction(method.Roots, b, function1);
             return root;
         }
 
@@ -70,13 +72,13 @@ namespace UserInterface
         {
             try
             {
-                function = ExpressionParser.GetFunction(functionInput.Text);
+                function1 = ExpressionParser.GetFunction(functionInput.Text);
                 derivative = ExpressionParser.GetFunction(derivativeInput.Text);
 
-                a = double.Parse(intervalInputA.Text);
+                a1 = double.Parse(intervalInputA.Text);
                 b = double.Parse(intervalInputB.Text);
 
-                if (a >= b)
+                if (a1 >= b)
                 {
                     throw new Exception();
                 }
@@ -90,8 +92,8 @@ namespace UserInterface
             }
 
             Plots.PlotUnit1Model.Series.Clear();
-            Plots.DrawInterval(Plots.PlotUnit1Model, a, b);
-            Plots.DrawFunction(Plots.PlotUnit1Model, function, a, b);
+            Plots.DrawInterval(Plots.PlotUnit1Model, a1, b);
+            Plots.DrawFunction(Plots.PlotUnit1Model, function1, a1, b);
 
             double root = 0;
             if (methodSelect.SelectedIndex == 0)
@@ -240,6 +242,30 @@ namespace UserInterface
                     yValueResult.Text = interpolationMethod2.Polynom(double.Parse(xValueInput.Text)).ToString();
                 }
                 catch { }
+            }
+        }
+
+        private void integrateButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var function = ExpressionParser.GetFunction(integrationFunctionInput.Text);
+                double a = double.Parse(integrationInputA.Text);
+                double b = double.Parse(integrationInputB.Text);
+                int n = (int)integrNodesSlider.Value;
+
+                IIntegrationMethod integrationMethod = null;
+                if (integrationMethodSelect.SelectedIndex == 0)
+                {
+                    integrationMethod = new RectangleMethod();
+                }
+
+                double result = integrationMethod.Calculate(function, a, b, n);
+                integrationResultText.Text = result.ToString();
+            }
+            catch
+            {
+
             }
         }
     }

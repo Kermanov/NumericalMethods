@@ -227,5 +227,79 @@
                 </Grid>
             </Grid>
         </TabItem>
+
+        <TabItem Header="Integration">
+            <Grid HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="400"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.13*"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" x:Name="integrFuncInputLabel" Content="y = " HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"/>
+                    <TextBox Grid.Column="1" x:Name="integrationFunctionInput" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="20"/>
+                </Grid>
+
+                <Label Grid.Row="1" x:Name="intervalLabel3" Content="Interval:" HorizontalAlignment="Left" VerticalAlignment="Stretch" FontSize="20"/>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.15*"></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition Width="0.25*"></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition Width="0.15*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" x:Name="leftBracketLabel3" Content="[" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Padding="5,0,5,5"/>
+                    <Label Grid.Column="2" x:Name="semicolonLabel3" Content=";" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Padding="5,0,5,5"/>
+                    <Label Grid.Column="4" x:Name="rightBracketLabel3" Content="]" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Padding="5,0,5,5"/>
+
+                    <TextBox Grid.Column="1" x:Name="integrationInputA" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Text="0"/>
+                    <TextBox Grid.Column="3" x:Name="integrationInputB" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Text="2"/>
+                </Grid>
+
+                <Label Grid.Row="3" x:Name="inegrNodesNumberLabel" Content="Number of nodes:" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="20"/>
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Slider x:Name="integrNodesSlider" HorizontalAlignment="Stretch" Grid.Column="0" VerticalAlignment="Stretch" Margin="0, 5, 5, 0" Value="{Binding ElementName=integrNodesTextbox, Path=Text}" Minimum="1" Maximum="99999" IsSnapToTickEnabled="True"/>
+                    <TextBox Grid.Column="1" x:Name="integrNodesTextbox" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Text="{Binding ElementName=integrNodesSlider, Path=Value}" MaxLength="5"/>
+                </Grid>
+
+                <ComboBox Grid.Row="5" x:Name="integrationMethodSelect" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="17" SelectedIndex="0">
+                    <TextBlock>Rectangle method</TextBlock>
+                </ComboBox>
+
+                <Button Grid.Row="6" x:Name="integrateButton" Content="Calculate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="integrateButton_Click"/>
+
+                <Grid Grid.Row="7">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" x:Name="integrResultLabel" Content="Result: " HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"/>
+                    <TextBox Grid.Column="1" x:Name="integrationResultText" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="20" IsReadOnly="True"/>
+                </Grid>
+            </Grid>
+        </TabItem>
     </TabControl>
 </Window>

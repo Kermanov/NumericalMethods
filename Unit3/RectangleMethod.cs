@@ -15,7 +15,7 @@ namespace Unit3
             double sum = 0;
             for (int i = 0; i < n; ++i)
             {
-                sum += function(a + ((2 * n + 1) / 2) * h);
+                sum += function(a + ((2 * i + 1) / 2.0) * h);
             }
             double result = sum * h;
 

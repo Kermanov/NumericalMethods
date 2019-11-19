@@ -229,7 +229,7 @@
         </TabItem>
 
         <TabItem Header="Integration">
-            <Grid HorizontalAlignment="Center">
+            <Grid HorizontalAlignment="Center" Background="WhiteSmoke">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"></RowDefinition>
                     <RowDefinition Height="40"></RowDefinition>
@@ -252,7 +252,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Label Grid.Column="0" x:Name="integrFuncInputLabel" Content="y = " HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="20"/>
-                    <TextBox Grid.Column="1" x:Name="integrationFunctionInput" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="20"/>
+                    <TextBox Grid.Column="1" x:Name="integrationFunctionInput" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Center" FontSize="20" Text="x^2 + 3 * x - 2"/>
                 </Grid>
 
                 <Label Grid.Row="1" x:Name="intervalLabel3" Content="Interval:" HorizontalAlignment="Left" VerticalAlignment="Stretch" FontSize="20"/>
@@ -280,8 +280,8 @@
                         <ColumnDefinition Width="0.2*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Slider x:Name="integrNodesSlider" HorizontalAlignment="Stretch" Grid.Column="0" VerticalAlignment="Stretch" Margin="0, 5, 5, 0" Value="{Binding ElementName=integrNodesTextbox, Path=Text}" Minimum="1" Maximum="99999" IsSnapToTickEnabled="True"/>
-                    <TextBox Grid.Column="1" x:Name="integrNodesTextbox" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Text="{Binding ElementName=integrNodesSlider, Path=Value}" MaxLength="5"/>
+                    <Slider x:Name="integrNodesSlider" HorizontalAlignment="Stretch" Grid.Column="0" VerticalAlignment="Stretch" Margin="0, 5, 5, 0" Value="{Binding ElementName=integrNodesTextbox, Path=Text}" Minimum="1" Maximum="9999" IsSnapToTickEnabled="True"/>
+                    <TextBox Grid.Column="1" x:Name="integrNodesTextbox" HorizontalAlignment="Stretch" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="20" Text="{Binding ElementName=integrNodesSlider, Path=Value}" MaxLength="4"/>
                 </Grid>
 
                 <ComboBox Grid.Row="5" x:Name="integrationMethodSelect" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="17" SelectedIndex="0">
@@ -290,7 +290,7 @@
                     <TextBlock>Simpsons method</TextBlock>
                 </ComboBox>
 
-                <Button Grid.Row="6" x:Name="integrateButton" Content="Calculate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="integrateButton_Click"/>
+                <Button Grid.Row="6" x:Name="integrateButton" Content="Calculate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="integrateButton_Click" FontSize="20"/>
 
                 <Grid Grid.Row="7">
                     <Grid.ColumnDefinitions>

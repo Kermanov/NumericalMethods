@@ -30,7 +30,7 @@ namespace UserInterface
         Func<double, double> function1;
         Func<double, double> derivative;
         double a1;
-        double b;
+        double b1;
         double eps;
 
         Func<double, double> function2;
@@ -46,7 +46,7 @@ namespace UserInterface
 
         private double SimpleIterativeMethodRun()
         {
-            var method = new SimpleIterativeMethod(function1, derivative, a1, b, eps);
+            var method = new SimpleIterativeMethod(function1, derivative, a1, b1, eps);
             double root = method.Calculate();
             Plots.DrawSimpleMethodFunction(method.Roots);
             return root;
@@ -54,7 +54,7 @@ namespace UserInterface
 
         private double NewtonIterativeMethodRun()
         {
-            var method = new NewtonIterativeMethod(function1, derivative, a1, b, eps);
+            var method = new NewtonIterativeMethod(function1, derivative, a1, b1, eps);
             double root = method.Calculate();
             Plots.DrawNewtonMethodFunction(method.Roots, function1);
             return root;
@@ -62,9 +62,9 @@ namespace UserInterface
 
         public double ChordIterativeMethodRun()
         {
-            var method = new ChordIterativeMethod(function1, a1, b, eps);
+            var method = new ChordIterativeMethod(function1, a1, b1, eps);
             double root = method.Calculate();
-            Plots.DrawChordMethodFunction(method.Roots, b, function1);
+            Plots.DrawChordMethodFunction(method.Roots, b1, function1);
             return root;
         }
 
@@ -76,102 +76,113 @@ namespace UserInterface
                 derivative = ExpressionParser.GetFunction(derivativeInput.Text);
 
                 a1 = double.Parse(intervalInputA.Text);
-                b = double.Parse(intervalInputB.Text);
+                b1 = double.Parse(intervalInputB.Text);
 
-                if (a1 >= b)
+                if (a1 >= b1)
                 {
-                    throw new Exception();
+                    throw new ArgumentException($"Incorrect interval: [{a1}; {b1}]\nb must be greater then a");
                 }
 
                 eps = double.Parse(epsilonInput.Text);
-            }
-            catch
-            {
-                resultTextBox.Text = $"Incorrect input";
-                return;
-            }
 
-            Plots.PlotUnit1Model.Series.Clear();
-            Plots.DrawInterval(Plots.PlotUnit1Model, a1, b);
-            Plots.DrawFunction(Plots.PlotUnit1Model, function1, a1, b);
+                Plots.PlotUnit1Model.Series.Clear();
+                Plots.DrawInterval(Plots.PlotUnit1Model, a1, b1);
+                Plots.DrawFunction(Plots.PlotUnit1Model, function1, a1, b1);
 
-            double root = 0;
-            if (methodSelect.SelectedIndex == 0)
-            {
-                root = SimpleIterativeMethodRun();
-            }
-            else if (methodSelect.SelectedIndex == 1)
-            {
-                root = NewtonIterativeMethodRun();
-            }
-            else if (methodSelect.SelectedIndex == 2)
-            {
-                root = ChordIterativeMethodRun();
-            }
+                double root = 0;
+                if (methodSelect.SelectedIndex == 0)
+                {
+                    root = SimpleIterativeMethodRun();
+                }
+                else if (methodSelect.SelectedIndex == 1)
+                {
+                    root = NewtonIterativeMethodRun();
+                }
+                else if (methodSelect.SelectedIndex == 2)
+                {
+                    root = ChordIterativeMethodRun();
+                }
 
-            Plots.PlotUnit1Model.InvalidatePlot(true);
+                Plots.PlotUnit1Model.InvalidatePlot(true);
 
-            resultTextBox.Text = $"x = {root}";
+                resultTextBox.Text = $"x = {root}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
         }
 
         private void interpolateButton_Click(object sender, RoutedEventArgs e)
         {
-            function2 = ExpressionParser.GetFunction(functionInput2.Text);
-            int nNodes = (int)nodesSlider.Value;
-            a2 = double.Parse(intervalInputA2.Text);
-            b2 = double.Parse(intervalInputB2.Text);
+            try
+            {
+                function2 = ExpressionParser.GetFunction(functionInput2.Text);
+                int nNodes = (int)nodesSlider.Value;
+                a2 = double.Parse(intervalInputA2.Text);
+                b2 = double.Parse(intervalInputB2.Text);
 
-            if (methodSelect2.SelectedIndex == 1 || methodSelect2.SelectedIndex == 2)
-            {
-                nodesSelectMode.SelectedIndex = 0;
-            }
+                if (a2 >= b2)
+                {
+                    throw new ArgumentException($"Incorrect interval: [{a2}; {b2}]\nb must be greater then a");
+                }
 
-            double[] xValues = null;
-            if (nodesSelectMode.SelectedIndex == 0)
-            {
-                xValues = InterpolationNodesSelector.SelectUniform(a2, b2, nNodes);
-            }
-            else if (nodesSelectMode.SelectedIndex == 1)
-            {
-                xValues = InterpolationNodesSelector.SelectChebyshev(a2, b2, nNodes);
-            }
+                if (methodSelect2.SelectedIndex == 1 || methodSelect2.SelectedIndex == 2)
+                {
+                    nodesSelectMode.SelectedIndex = 0;
+                }
 
-            double[] yValues = new double[nNodes];
-            for (int i = 0; i < nNodes; ++i)
-            {
-                yValues[i] = function2(xValues[i]);
-            }
+                double[] xValues = null;
+                if (nodesSelectMode.SelectedIndex == 0)
+                {
+                    xValues = InterpolationNodesSelector.SelectUniform(a2, b2, nNodes);
+                }
+                else if (nodesSelectMode.SelectedIndex == 1)
+                {
+                    xValues = InterpolationNodesSelector.SelectChebyshev(a2, b2, nNodes);
+                }
 
-            IInterpolationMethod interpolationMethod = null;
-            if (methodSelect2.SelectedIndex == 0)
-            {
-                interpolationMethod = new LagrangeInterpolationMethod(xValues, yValues);
-            }
-            else if (methodSelect2.SelectedIndex == 1)
-            {
-                interpolationMethod = new NewtonInterpolationForwardUniformMethod(xValues, yValues);
-            }
-            else if (methodSelect2.SelectedIndex == 2)
-            {
-                interpolationMethod = new NewtonInterpolationBackUniformMethod(xValues, yValues);
-            }
-            else if (methodSelect2.SelectedIndex == 3)
-            {
-                interpolationMethod = new NewtonInterpolationForwardUnevenMethod(xValues, yValues);
-            }
-            else if (methodSelect2.SelectedIndex == 4)
-            {
-                interpolationMethod = new NewtonInterpolationBackUnevenMethod(xValues, yValues);
-            }
+                double[] yValues = new double[nNodes];
+                for (int i = 0; i < nNodes; ++i)
+                {
+                    yValues[i] = function2(xValues[i]);
+                }
 
-            Plots.PlotUnit2Model.Series.Clear();
+                IInterpolationMethod interpolationMethod = null;
+                if (methodSelect2.SelectedIndex == 0)
+                {
+                    interpolationMethod = new LagrangeInterpolationMethod(xValues, yValues);
+                }
+                else if (methodSelect2.SelectedIndex == 1)
+                {
+                    interpolationMethod = new NewtonInterpolationForwardUniformMethod(xValues, yValues);
+                }
+                else if (methodSelect2.SelectedIndex == 2)
+                {
+                    interpolationMethod = new NewtonInterpolationBackUniformMethod(xValues, yValues);
+                }
+                else if (methodSelect2.SelectedIndex == 3)
+                {
+                    interpolationMethod = new NewtonInterpolationForwardUnevenMethod(xValues, yValues);
+                }
+                else if (methodSelect2.SelectedIndex == 4)
+                {
+                    interpolationMethod = new NewtonInterpolationBackUnevenMethod(xValues, yValues);
+                }
 
-            Plots.DrawInterval(Plots.PlotUnit2Model, a2, b2);
-            Plots.DrawFunction(Plots.PlotUnit2Model, function2, a2, b2, "255,100,200,100", $"y = {functionInput2.Text}");
-            Plots.DrawFunction(Plots.PlotUnit2Model, interpolationMethod.Polynom, a2, b2, "255,100,100,200", "Interpolation polynom");
-            Plots.DrawPoints(Plots.PlotUnit2Model, xValues, yValues);
+                Plots.PlotUnit2Model.Series.Clear();
 
-            Plots.PlotUnit2Model.InvalidatePlot(true);
+                Plots.DrawInterval(Plots.PlotUnit2Model, a2, b2);
+                Plots.DrawFunction(Plots.PlotUnit2Model, function2, a2, b2, "255,100,200,100", $"y = {functionInput2.Text}");
+                Plots.DrawFunction(Plots.PlotUnit2Model, interpolationMethod.Polynom, a2, b2, "255,100,100,200", "Interpolation polynom");
+                Plots.DrawPoints(Plots.PlotUnit2Model, xValues, yValues);
+
+                Plots.PlotUnit2Model.InvalidatePlot(true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
         }
 
         private void interpolateButton2_Click(object sender, RoutedEventArgs e)
@@ -194,12 +205,12 @@ namespace UserInterface
 
                 if (xValues.Length == 0 || yValues.Length == 0)
                 {
-                    throw new Exception();
+                    throw new ArgumentException("One of the value lists is empty");
                 }
                 
                 if (xValues.Length != yValues.Length)
                 {
-                    throw new Exception();
+                    throw new ArgumentException("Lists of values have different lengths");
                 }
 
                 if (methodSelect3.SelectedIndex == 0)
@@ -230,7 +241,10 @@ namespace UserInterface
 
                 Plots.PlotInterpol2Model.InvalidatePlot(true);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
         }
 
         private void calculateCustom_Click(object sender, RoutedEventArgs e)
@@ -241,7 +255,10 @@ namespace UserInterface
                 {
                     yValueResult.Text = interpolationMethod2.Polynom(double.Parse(xValueInput.Text)).ToString();
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error");
+                }
             }
         }
 
@@ -252,6 +269,11 @@ namespace UserInterface
                 var function = ExpressionParser.GetFunction(integrationFunctionInput.Text);
                 double a = double.Parse(integrationInputA.Text);
                 double b = double.Parse(integrationInputB.Text);
+                if (b <= a)
+                {
+                    throw new ArgumentException($"Incorrect interval: [{a}; {b}]\nb must be greater then a");
+                }
+
                 int n = (int)integrNodesSlider.Value;
 
                 IIntegrationMethod integrationMethod = null;
@@ -269,11 +291,11 @@ namespace UserInterface
                 }
 
                 double result = integrationMethod.Calculate(function, a, b, n);
-                integrationResultText.Text = result.ToString();
+                integrationResultText.Text = $"{result:f15}";
             }
-            catch
+            catch (Exception ex)
             {
-
+                MessageBox.Show(ex.Message, "Error");
             }
         }
     }

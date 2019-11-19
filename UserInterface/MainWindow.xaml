@@ -286,6 +286,7 @@
 
                 <ComboBox Grid.Row="5" x:Name="integrationMethodSelect" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="17" SelectedIndex="0">
                     <TextBlock>Rectangle method</TextBlock>
+                    <TextBlock>Trapezoid method</TextBlock>
                 </ComboBox>
 
                 <Button Grid.Row="6" x:Name="integrateButton" Content="Calculate" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="integrateButton_Click"/>

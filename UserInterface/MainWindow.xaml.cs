@@ -259,6 +259,10 @@ namespace UserInterface
                 {
                     integrationMethod = new RectangleMethod();
                 }
+                else if (integrationMethodSelect.SelectedIndex == 1)
+                {
+                    integrationMethod = new TrapezoidMethod();
+                }
 
                 double result = integrationMethod.Calculate(function, a, b, n);
                 integrationResultText.Text = result.ToString();

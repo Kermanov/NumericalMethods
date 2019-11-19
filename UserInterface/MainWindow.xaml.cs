@@ -263,6 +263,10 @@ namespace UserInterface
                 {
                     integrationMethod = new TrapezoidMethod();
                 }
+                else if (integrationMethodSelect.SelectedIndex == 2)
+                {
+                    integrationMethod = new SimpsonsMethod();
+                }
 
                 double result = integrationMethod.Calculate(function, a, b, n);
                 integrationResultText.Text = result.ToString();
